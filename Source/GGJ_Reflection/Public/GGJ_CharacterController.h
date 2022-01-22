@@ -37,6 +37,4 @@ public:
 private:
 	void HorizontalMove(float value);
 	void VerticalMove(float value);
-	void Jump();
-	
 };

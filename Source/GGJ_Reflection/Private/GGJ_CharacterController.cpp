@@ -56,8 +56,4 @@ void AGGJ_CharacterController::VerticalMove(float value)
 	}
 }
 
-void AGGJ_CharacterController::Jump()
-{
-
-}
 

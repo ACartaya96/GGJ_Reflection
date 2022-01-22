@@ -11,9 +11,27 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	PrimaryActorTick.bCanEverTick = true;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	CameraBoom->TargetArmLength = 300.0f;
+	CameraBoom->bUsePawnControlRotation = true;
+
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+
+	FollowCamera->bUsePawnControlRotation = false;
+
 	MyMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cylinder"));
 	MyMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	
 }
 
 // Called when the game starts or when spawned
@@ -35,9 +53,10 @@ void AGGJ_CharacterController::Tick(float DeltaTime)
 void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	InputComponent-> BindAxis("Horizontal", this, &AGGJ_CharacterController::HorizontalMove);
-	InputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
-	
+	PlayerInputComponent-> BindAxis("Horizontal", this, &AGGJ_CharacterController::HorizontalMove);
+	PlayerInputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
 void AGGJ_CharacterController::HorizontalMove(float value)

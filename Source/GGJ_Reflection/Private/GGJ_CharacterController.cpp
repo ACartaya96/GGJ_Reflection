@@ -15,15 +15,16 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 300.0f, 0.0f);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	//GetCharacterMovement()->RotationRate = FRotator(0.0f, 300.0f, 0.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	CameraBoom->TargetArmLength = 300.0f;
-	CameraBoom->bUsePawnControlRotation = true;
+	CameraBoom->bUsePawnControlRotation = false;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	//FollowCamera->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
 	FollowCamera->bUsePawnControlRotation = false;
@@ -54,11 +55,11 @@ void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* Player
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent-> BindAxis("Horizontal", this, &AGGJ_CharacterController::HorizontalMove);
 	PlayerInputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
-void AGGJ_CharacterController::HorizontalMove(float value)
+void AGGJ_CharacterController::VerticalMove(float value)
 {
 	if (value && isClimbing == false)
 	{
@@ -66,7 +67,7 @@ void AGGJ_CharacterController::HorizontalMove(float value)
 	}
 }
 
-void AGGJ_CharacterController::VerticalMove(float value)
+void AGGJ_CharacterController::HorizontalMove(float value)
 {
 	if (value  && isClimbing == false)
 	{

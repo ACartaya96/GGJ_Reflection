@@ -27,9 +27,8 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
 	FollowCamera->bUsePawnControlRotation = false;
-
-	MyMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cylinder"));
-	MyMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
+	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	
 }

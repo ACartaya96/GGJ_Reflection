@@ -34,8 +34,12 @@ protected:
 
 public:	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* MyMeshComponent;
+	USkeletalMeshComponent* MySMeshComponent;
 
+	UFUNCTION(BlueprintCreatedComponents)
+	void HorizontalMove(float value);
+	UFUNCTION(BlueprintCreatedComponents)
+	void VerticalMove(float value);
 	
 
 	// Called every frame
@@ -45,7 +49,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void HorizontalMove(float value);
-	void VerticalMove(float value);
+	
 	
 };

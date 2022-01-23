@@ -36,10 +36,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USkeletalMeshComponent* MySMeshComponent;
 
-	UFUNCTION(BlueprintCreatedComponents)
-	void HorizontalMove(float value);
-	UFUNCTION(BlueprintCreatedComponents)
-	void VerticalMove(float value);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isClimbing = false;
 	
 
 	// Called every frame
@@ -49,6 +47,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	
+	void HorizontalMove(float value);
+
+	void VerticalMove(float value);
 	
 };

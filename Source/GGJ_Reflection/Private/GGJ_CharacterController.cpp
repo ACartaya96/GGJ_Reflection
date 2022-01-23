@@ -16,7 +16,7 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	bUseControllerRotationRoll = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 300.0f, 0.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -60,7 +60,7 @@ void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* Player
 
 void AGGJ_CharacterController::HorizontalMove(float value)
 {
-	if (value)
+	if (value && isClimbing == false)
 	{
 		AddMovementInput(GetActorRightVector(), value);
 	}
@@ -68,7 +68,7 @@ void AGGJ_CharacterController::HorizontalMove(float value)
 
 void AGGJ_CharacterController::VerticalMove(float value)
 {
-	if (value)
+	if (value  && isClimbing == false)
 	{
 		AddMovementInput(GetActorForwardVector(), value);
 	}

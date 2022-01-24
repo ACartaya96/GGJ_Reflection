@@ -44,10 +44,22 @@ void AGGJ_CharacterController::BeginPlay()
 }
 
 
+void AGGJ_CharacterController::ForwardTrace()
+{
+	
+}
+
+void AGGJ_CharacterController::HeightTrace()
+{
+}
+
 // Called every frame
 void AGGJ_CharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//Check Trace
+	ForwardTrace();
+	HeightTrace();
 
 }
 

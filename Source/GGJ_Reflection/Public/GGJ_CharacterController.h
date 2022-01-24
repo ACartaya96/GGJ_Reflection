@@ -43,7 +43,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isClimbing = false;
-	
+	UFUNCTION(BlueprintCallable)
+	void ForwardTrace();
+	UFUNCTION(BlueprintCallable)
+	void HeightTrace();
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

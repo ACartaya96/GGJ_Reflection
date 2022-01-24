@@ -31,7 +31,9 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
 	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	
+	IMC = CreateDefaultSubobject<UInteractionManagerComponent>(TEXT("InteractionManager"));
+	AddOwnedComponent(IMC);
+
 }
 
 // Called when the game starts or when spawned
@@ -69,6 +71,8 @@ void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* Player
 	PlayerInputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
 	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &AGGJ_CharacterController::Interact);
 }
 
 void AGGJ_CharacterController::VerticalMove(float value)
@@ -87,4 +91,10 @@ void AGGJ_CharacterController::HorizontalMove(float value)
 	}
 }
 
-
+void AGGJ_CharacterController::Interact()
+{
+	if (IMC)
+	{
+		IMC->DoInteraction();
+	}
+}

@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "InteractionManagerComponent.h"
 #include "GGJ_CharacterController.generated.h"
 
 UCLASS()
@@ -22,9 +23,13 @@ public:
 	AGGJ_CharacterController();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		UCameraComponent* FollowCamera;
+	UCameraComponent* FollowCamera;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UInteractionManagerComponent* IMC;
 
 protected:
 	// Called when the game starts or when spawned
@@ -48,6 +53,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Interact();
 
 private:
 	void HorizontalMove(float value);

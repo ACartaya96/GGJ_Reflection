@@ -4,3 +4,4 @@
 
 #include "CoreMinimal.h"
 
+#define OBJ_Interactable EObjectTypeQuery::ObjectTypeQuery1

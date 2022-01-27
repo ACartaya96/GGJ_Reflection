@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "LedgeTrace.generated.h"
+#include "SphereTrace.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class GGJ_REFLECTION_API ULedgeTrace : public UActorComponent
+class GGJ_REFLECTION_API USphereTrace : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	ULedgeTrace();
+	USphereTrace();
 
 protected:
 	// Called when the game starts

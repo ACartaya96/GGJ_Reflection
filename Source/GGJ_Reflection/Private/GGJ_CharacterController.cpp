@@ -48,6 +48,7 @@ void AGGJ_CharacterController::BeginPlay()
 void AGGJ_CharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	Hanging();
 }
 
 // Called to bind functionality to input
@@ -66,6 +67,19 @@ void AGGJ_CharacterController::VerticalMove(float value)
 	{
 		AddMovementInput(GetActorRightVector(), value);
 	}
+}
+
+void AGGJ_CharacterController::Hanging()
+{
+	//CAUTION CAUSES CRASH WIL FIGURE OUT TOMORROW
+	/*if (LedgeTrace->FrontTrace() == true)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
+			if (LedgeTrace->HeightTrace() == true)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Climable"));
+			}
+		}*/
 }
 
 void AGGJ_CharacterController::HorizontalMove(float value)

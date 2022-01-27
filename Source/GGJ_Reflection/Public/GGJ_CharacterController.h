@@ -28,14 +28,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UCameraComponent* FollowCamera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		USkeletalMeshComponent* MySMeshComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USkeletalMeshComponent* MySMeshComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isClimbing = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UInteractionManagerComponent* IMC;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera)
 	USphereTrace* LedgeTrace;
 
 
@@ -60,5 +61,9 @@ private:
 	void HorizontalMove(float value);
 
 	void VerticalMove(float value);
+
+	void Hanging();
+
+	void Climbing();
 	
 };

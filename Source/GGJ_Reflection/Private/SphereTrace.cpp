@@ -23,10 +23,10 @@ void USphereTrace::BeginPlay()
 	
 }
 
-void USphereTrace::FrontTrace()
+bool USphereTrace::FrontTrace()
 {
 	// Store the start and end locations of the trace
-	const FVector Start = GetOwner()->GetActorLocation();
+	const FVector Start = GetOwner()->GetActorLocation(); // CAUTION: CAUSING CRASH WILL FIGURE OUT TOMORROW
 	const FVector End = GetOwner()->GetActorForwardVector() * 150.0f + Start;
 	//Array of actors to ignore
 	TArray<AActor*>ActorsToIgnore;
@@ -36,20 +36,25 @@ void USphereTrace::FrontTrace()
 	TArray<FHitResult> HitArray;
 
 	const bool Hit = UKismetSystemLibrary::SphereTraceMulti(GetWorld(), Start, End, TraceRadius, UEngineTypes::ConvertToTraceType(ECC_Camera), false,
-		ActorsToIgnore, DrawDebugType, HitArray, true, FLinearColor::Red, FLinearColor::Green, 60.0f);
+		ActorsToIgnore, DrawDebugType, HitArray, true, FLinearColor::Red, FLinearColor::Green, DrawDebugTime);
 
 	//If we get a valid Hit
 	if (Hit)
 	{
+		
 		for (const FHitResult HitResult : HitArray)
 		{
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Forward"));
+			//Setting the Normal and Location of the Object in variables
 			WallNormal = HitResult.Normal;
 			WallLocation = HitResult.Location;
 		}
+		return true;
 	}
+	return false;
 }
 
-void USphereTrace::HeightTrace()
+bool USphereTrace::HeightTrace()
 {
 	// Store the start and end locations of the trace
 	const FVector Start = GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 75.0f) + FVector(0,0,250);
@@ -67,11 +72,25 @@ void USphereTrace::HeightTrace()
 	//If we get a valid Hit
 	if (Hit)
 	{
+		
 		for (const FHitResult HitResult : HitArray)
 		{
-
+			//Set HeightLocation to Object Location
+			HeightLocation = HitResult.Location;
+			FVector SocketLocation;
+			//Tried doing GetMesh()->SocketLocation but unsure how to call a socket from one class to the next need to do more research
+			//Just want the Z vector calculation of the two vectors
+			SocketLocation.Z = 88.0f  - HeightLocation.Z;
+			//Checking if Character is inRange of the Ledge
+			if (SocketLocation.Z >= -50.0f || SocketLocation.Z <= 0.0f)
+			{
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
+				return true;
+			}
+		
 		}
 	}
+	return false;
 }
 
 

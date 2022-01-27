@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Math/Vector.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Character.h"
 #include "SphereTrace.generated.h"
 
 
@@ -20,8 +23,9 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	void FrontTrace();
-	void HeightTrace();
+	
+	
+	USkeletalMeshComponent* Mesh;
 
 
 public:	
@@ -29,13 +33,21 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(VisibleAnywhere)
-		FVector WallNormal;
+	FVector WallNormal = FVector(0,0,0);
 	UPROPERTY(VisibleAnywhere)
-		FVector WallLocation;
+	FVector WallLocation = FVector(0,0,0);
+	UPROPERTY(VisibleAnywhere)
+	FVector HeightLocation = FVector(0,0,0);
 	UPROPERTY(EditAnywhere)
 	float TraceRadius = 10.0f;
 	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EDrawDebugTrace::Type> DrawDebugType = EDrawDebugTrace::None;
+	TEnumAsByte<EDrawDebugTrace::Type> DrawDebugType = EDrawDebugTrace::ForOneFrame;
+	UPROPERTY(EditAnywhere)
+	float DrawDebugTime = 2.0f;
+	
+	bool FrontTrace();
 
-		
+	bool HeightTrace();
+
+
 };

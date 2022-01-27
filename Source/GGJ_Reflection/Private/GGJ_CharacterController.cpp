@@ -24,15 +24,15 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	CameraBoom->bUsePawnControlRotation = false;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	//FollowCamera->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-
 	FollowCamera->bUsePawnControlRotation = false;
+	
 	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
 	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	IMC = CreateDefaultSubobject<UInteractionManagerComponent>(TEXT("InteractionManager"));
 	AddOwnedComponent(IMC);
+	LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
 
 }
 
@@ -43,24 +43,10 @@ void AGGJ_CharacterController::BeginPlay()
 	
 }
 
-
-void AGGJ_CharacterController::ForwardTrace()
-{
-	
-}
-
-void AGGJ_CharacterController::HeightTrace()
-{
-}
-
 // Called every frame
 void AGGJ_CharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//Check Trace
-	ForwardTrace();
-	HeightTrace();
-
 }
 
 // Called to bind functionality to input
@@ -69,8 +55,6 @@ void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* Player
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent-> BindAxis("Horizontal", this, &AGGJ_CharacterController::HorizontalMove);
 	PlayerInputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
-	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &AGGJ_CharacterController::Interact);
 }

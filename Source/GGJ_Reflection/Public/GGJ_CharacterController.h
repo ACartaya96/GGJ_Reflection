@@ -10,6 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "InteractionManagerComponent.h"
+#include "SphereTrace.h"
 #include "GGJ_CharacterController.generated.h"
 
 UCLASS()
@@ -27,9 +28,16 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UCameraComponent* FollowCamera;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		USkeletalMeshComponent* MySMeshComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isClimbing = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UInteractionManagerComponent* IMC;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	USphereTrace* LedgeTrace;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,15 +46,7 @@ protected:
 	bool isJumping;
 
 public:	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USkeletalMeshComponent* MySMeshComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool isClimbing = false;
-	UFUNCTION(BlueprintCallable)
-	void ForwardTrace();
-	UFUNCTION(BlueprintCallable)
-	void HeightTrace();
+	
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

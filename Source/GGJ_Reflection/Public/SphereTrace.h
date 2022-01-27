@@ -20,13 +20,27 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere)
+	FVector WallNormal;
+	UPROPERTY(VisibleAnywhere)
+	FVector WallLocation;
+
+	void FrontTrace();
+	void HeightTrace();
+
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere, Category = "Trace")
-	float TraceRadius = 500.0f;
+	UPROPERTY(VisibleAnywhere)
+		FVector WallNormal;
+	UPROPERTY(VisibleAnywhere)
+		FVector WallLocation;
+	UPROPERTY(EditAnywhere)
+	float TraceRadius = 10.0f;
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<EDrawDebugTrace::Type> DrawDebugType = EDrawDebugTrace::None;
 
 		
 };

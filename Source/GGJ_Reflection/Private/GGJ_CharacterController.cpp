@@ -30,9 +30,10 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
 	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
 	IMC = CreateDefaultSubobject<UInteractionManagerComponent>(TEXT("InteractionManager"));
 	AddOwnedComponent(IMC);
-	LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
+	
 
 }
 

@@ -20,11 +20,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	UPROPERTY(VisibleAnywhere)
-	FVector WallNormal;
-	UPROPERTY(VisibleAnywhere)
-	FVector WallLocation;
-
 	void FrontTrace();
 	void HeightTrace();
 

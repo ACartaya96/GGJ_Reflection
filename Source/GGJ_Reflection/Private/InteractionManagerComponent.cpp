@@ -50,7 +50,8 @@ void UInteractionManagerComponent::DoInteraction()
 	UObject* pinteraction = interaction.Get(false);
 	if (pinteraction)
 	{
-		IInteractable::Execute_DoInteraction(pinteraction);
+		AActor* powner = Cast<AActor>(GetOwner());
+		IInteractable::Execute_DoInteraction(pinteraction, powner);
 	}
 }
 

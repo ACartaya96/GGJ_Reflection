@@ -32,5 +32,5 @@ public:
 
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void DoInteraction();
+	void DoInteraction(AActor* Instigator);
 };

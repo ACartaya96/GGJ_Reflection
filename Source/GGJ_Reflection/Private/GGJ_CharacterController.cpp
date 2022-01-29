@@ -24,17 +24,19 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	CameraBoom->bUsePawnControlRotation = false;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	//FollowCamera->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-
 	FollowCamera->bUsePawnControlRotation = false;
+	
 	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
 	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	//LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
 	IMC = CreateDefaultSubobject<UInteractionManagerComponent>(TEXT("InteractionManager"));
 	AddOwnedComponent(IMC);
+	
 
 }
+
 
 // Called when the game starts or when spawned
 void AGGJ_CharacterController::BeginPlay()
@@ -43,24 +45,10 @@ void AGGJ_CharacterController::BeginPlay()
 	
 }
 
-
-void AGGJ_CharacterController::ForwardTrace()
-{
-	
-}
-
-void AGGJ_CharacterController::HeightTrace()
-{
-}
-
 // Called every frame
 void AGGJ_CharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//Check Trace
-	ForwardTrace();
-	HeightTrace();
-
 }
 
 // Called to bind functionality to input
@@ -69,8 +57,6 @@ void AGGJ_CharacterController::SetupPlayerInputComponent(UInputComponent* Player
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent-> BindAxis("Horizontal", this, &AGGJ_CharacterController::HorizontalMove);
 	PlayerInputComponent-> BindAxis("Vertical", this, &AGGJ_CharacterController::VerticalMove);
-	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &AGGJ_CharacterController::Interact);
 }
@@ -83,28 +69,18 @@ void AGGJ_CharacterController::VerticalMove(float value)
 	}
 }
 
-<<<<<<< Updated upstream
-=======
+float AGGJ_CharacterController::PlayAnimMontage(class UAnimMontage* AnimMontage, float inPlayRate, FName StartSectionName)
+{
+	return duration;
+}
+
 void AGGJ_CharacterController::Hanging()
 {
-	bool result; 
-	LedgeTrace->FrontTrace(&result);
-	//CAUTION CAUSES CRASH WIL FIGURE OUT TOMORROW
-	if (result == true)
-		{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
-			/*if (LedgeTrace->HeightTrace() == true)
-			{
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Climable"));
-			}*/
-		}
+	isClimbing = true;
+	//PlayAnimMontage()
+	
 }
 
-void AGGJ_CharacterController::Climbing()
-{
-}
-
->>>>>>> Stashed changes
 void AGGJ_CharacterController::HorizontalMove(float value)
 {
 	if (value  && isClimbing == false)

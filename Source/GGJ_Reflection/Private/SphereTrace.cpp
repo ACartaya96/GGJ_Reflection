@@ -2,6 +2,10 @@
 
 
 #include "SphereTrace.h"
+#include "Engine/Engine.h"
+#include "GGJ_CharacterController.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "GameFramework/NavMovementComponent.h"
 
 // Sets default values for this component's properties
 USphereTrace::USphereTrace()
@@ -19,11 +23,13 @@ void USphereTrace::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Character = Cast<AGGJ_CharacterController>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+
 	
 	
 }
 
-void USphereTrace::FrontTrace(bool* shit)
+void USphereTrace::FrontTrace()
 {
 	// Store the start and end locations of the trace
 	const FVector Start = GetOwner()->GetActorLocation(); 
@@ -46,8 +52,55 @@ void USphereTrace::FrontTrace(bool* shit)
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Forward"));
 			//Setting the Normal and Location of the Object in variables
-			WallNormal = HitResult.Normal;
-			WallLocation = HitResult.Location;
+			Character->WallNormal = HitResult.ImpactNormal;
+			Character->WallLocation = HitResult.Location;
+		}
+		
+	}
+	
+}
+
+void USphereTrace::HeightTrace()
+{
+	// Store the start and end locations of the trace
+	const FVector Start = GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 75.0f) + FVector(0,0,250);
+	const FVector End = Start - FVector(0, 0, 250);
+	//Array of actors to ignore
+	TArray<AActor*>ActorsToIgnore;
+	//Add Actor this is attached on to be ignored
+	ActorsToIgnore.Add(GetOwner());
+	//Variable to store the hit information return
+	TArray<FHitResult> HitArray;
+
+	const bool Hit = UKismetSystemLibrary::SphereTraceMulti(GetWorld(), Start, End, TraceRadius, UEngineTypes::ConvertToTraceType(ECC_Camera), false,
+		ActorsToIgnore, DrawDebugType, HitArray, true, FLinearColor::Red, FLinearColor::Green, DrawDebugTime);
+
+	//If we get a valid Hit
+	if (Hit)
+	{
+		
+		for (const FHitResult HitResult : HitArray)
+		{
+			//Set HeightLocation to Object Location
+			HeightLocation = HitResult.Location;
+			FVector SocketLocation;
+			//Tried doing GetMesh()->SocketLocation but unsure how to call a socket from one class to the next need to do more research
+			//Just want the Z vector calculation of the two vectors
+			SocketLocation = Character->MySMeshComponent->GetSocketLocation("Pelvis Socket");
+			SocketLocation.Z -= HeightLocation.Z;
+			//Checking if Character is inRange of the Ledge
+			if (SocketLocation.Z >= -60.0f && SocketLocation.Z <= 0.0f)
+			{
+				
+				if (Character->isClimbing == false)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
+					Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+					Character->GetCharacterMovement()->StopMovementImmediately();
+					Character->Hang();
+				}
+			}
+		
 		}
 		*shit = true;
 	}
@@ -99,7 +152,7 @@ void USphereTrace::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FrontTrace(false);
+	FrontTrace();
 	HeightTrace();
 
 	// ...

@@ -11,6 +11,8 @@
 #include "SphereTrace.generated.h"
 
 
+class AGGJ_CharacterController;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GGJ_REFLECTION_API USphereTrace : public UActorComponent
 {
@@ -18,15 +20,14 @@ class GGJ_REFLECTION_API USphereTrace : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
+	
 	USphereTrace();
-
+	AGGJ_CharacterController* Character;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	
-	USkeletalMeshComponent* Mesh;
-
 
 public:	
 	// Called every frame
@@ -45,9 +46,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float DrawDebugTime = 2.0f;
 	
-	bool FrontTrace();
+	void FrontTrace();
 
-	bool HeightTrace();
+	void HeightTrace();
 
 
 };

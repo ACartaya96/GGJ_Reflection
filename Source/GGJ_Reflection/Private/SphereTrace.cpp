@@ -2,6 +2,9 @@
 
 
 #include "SphereTrace.h"
+#include "Engine/Engine.h"
+#include "GGJ_CharacterController.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 USphereTrace::USphereTrace()
@@ -19,11 +22,13 @@ void USphereTrace::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Character = Cast<AGGJ_CharacterController>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+
 	
 	
 }
 
-bool USphereTrace::FrontTrace()
+void USphereTrace::FrontTrace()
 {
 	// Store the start and end locations of the trace
 	const FVector Start = GetOwner()->GetActorLocation(); 
@@ -49,12 +54,12 @@ bool USphereTrace::FrontTrace()
 			WallNormal = HitResult.Normal;
 			WallLocation = HitResult.Location;
 		}
-		return true;
+		
 	}
-	return false;
+	
 }
 
-bool USphereTrace::HeightTrace()
+void USphereTrace::HeightTrace()
 {
 	// Store the start and end locations of the trace
 	const FVector Start = GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 75.0f) + FVector(0,0,250);
@@ -80,17 +85,20 @@ bool USphereTrace::HeightTrace()
 			FVector SocketLocation;
 			//Tried doing GetMesh()->SocketLocation but unsure how to call a socket from one class to the next need to do more research
 			//Just want the Z vector calculation of the two vectors
-			SocketLocation.Z = 88.0f  - HeightLocation.Z;
+			SocketLocation = Character->GetMesh()->GetSocketLocation("Pelvis Socket");
+			SocketLocation.Z -= HeightLocation.Z;
 			//Checking if Character is inRange of the Ledge
 			if (SocketLocation.Z >= -50.0f || SocketLocation.Z <= 0.0f)
 			{
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
-				return true;
+				
+				Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+				Character->GetCharacterMovement()->StopMovementImmediately();
 			}
 		
 		}
 	}
-	return false;
+	
 }
 
 

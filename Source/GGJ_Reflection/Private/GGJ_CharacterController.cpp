@@ -48,7 +48,6 @@ void AGGJ_CharacterController::BeginPlay()
 void AGGJ_CharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Hanging();
 }
 
 // Called to bind functionality to input

@@ -102,49 +102,11 @@ void USphereTrace::HeightTrace()
 			}
 		
 		}
-		*shit = true;
+		
 	}
-	*shit = false;
+	
 }
 
-bool USphereTrace::HeightTrace()
-{
-	// Store the start and end locations of the trace
-	const FVector Start = GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 75.0f) + FVector(0,0,250);
-	const FVector End = Start - FVector(0, 0, 250);
-	//Array of actors to ignore
-	TArray<AActor*>ActorsToIgnore;
-	//Add Actor this is attached on to be ignored
-	ActorsToIgnore.Add(GetOwner());
-	//Variable to store the hit information return
-	TArray<FHitResult> HitArray;
-
-	const bool Hit = UKismetSystemLibrary::SphereTraceMulti(GetWorld(), Start, End, TraceRadius, UEngineTypes::ConvertToTraceType(ECC_Camera), false,
-		ActorsToIgnore, DrawDebugType, HitArray, true, FLinearColor::Red, FLinearColor::Green, 60.0f);
-
-	//If we get a valid Hit
-	if (Hit)
-	{
-		
-		for (const FHitResult HitResult : HitArray)
-		{
-			//Set HeightLocation to Object Location
-			HeightLocation = HitResult.Location;
-			FVector SocketLocation;
-			//Tried doing GetMesh()->SocketLocation but unsure how to call a socket from one class to the next need to do more research
-			//Just want the Z vector calculation of the two vectors
-			SocketLocation.Z = 88.0f  - HeightLocation.Z;
-			//Checking if Character is inRange of the Ledge
-			if (SocketLocation.Z >= -50.0f || SocketLocation.Z <= 0.0f)
-			{
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
-				return true;
-			}
-		
-		}
-	}
-	return false;
-}
 
 
 // Called every frame

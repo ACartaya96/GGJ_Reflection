@@ -26,7 +26,7 @@ void USphereTrace::BeginPlay()
 bool USphereTrace::FrontTrace()
 {
 	// Store the start and end locations of the trace
-	const FVector Start = GetOwner()->GetActorLocation(); // CAUTION: CAUSING CRASH WILL FIGURE OUT TOMORROW
+	const FVector Start = GetOwner()->GetActorLocation(); 
 	const FVector End = GetOwner()->GetActorForwardVector() * 150.0f + Start;
 	//Array of actors to ignore
 	TArray<AActor*>ActorsToIgnore;

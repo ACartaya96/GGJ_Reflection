@@ -74,7 +74,7 @@ void AGGJ_CharacterController::Hanging()
 	//CAUTION CAUSES CRASH WIL FIGURE OUT TOMORROW
 	/*if (LedgeTrace->FrontTrace() == true)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
 			if (LedgeTrace->HeightTrace() == true)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Climable"));

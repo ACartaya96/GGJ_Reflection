@@ -30,14 +30,22 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USkeletalMeshComponent* MySMeshComponent;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isClimbing = false;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector WallNormal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector WallLocation;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UInteractionManagerComponent* IMC;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera)
-	USphereTrace* LedgeTrace;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	//USphereTrace* LedgeTrace;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Hang();
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,14 +63,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void Interact();
+	
+	void Hanging();
+
+	void Climbing();
 
 private:
 	void HorizontalMove(float value);
 
 	void VerticalMove(float value);
 
-	void Hanging();
+	float PlayAnimMontage(class UAnimMontage* AnimMontage, float inPlayRate, FName StartSectionName);
 
-	void Climbing();
+	float duration;
+
+	
 	
 };

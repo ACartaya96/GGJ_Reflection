@@ -33,10 +33,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(VisibleAnywhere)
-	FVector WallNormal = FVector(0,0,0);
-	UPROPERTY(VisibleAnywhere)
-	FVector WallLocation = FVector(0,0,0);
+	
 	UPROPERTY(VisibleAnywhere)
 	FVector HeightLocation = FVector(0,0,0);
 	UPROPERTY(EditAnywhere)

@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "GGJ_CharacterController.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "GameFramework/NavMovementComponent.h"
 
 // Sets default values for this component's properties
 USphereTrace::USphereTrace()
@@ -51,8 +52,8 @@ void USphereTrace::FrontTrace()
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Forward"));
 			//Setting the Normal and Location of the Object in variables
-			WallNormal = HitResult.Normal;
-			WallLocation = HitResult.Location;
+			Character->WallNormal = HitResult.ImpactNormal;
+			Character->WallLocation = HitResult.Location;
 		}
 		
 	}
@@ -85,15 +86,19 @@ void USphereTrace::HeightTrace()
 			FVector SocketLocation;
 			//Tried doing GetMesh()->SocketLocation but unsure how to call a socket from one class to the next need to do more research
 			//Just want the Z vector calculation of the two vectors
-			SocketLocation = Character->GetMesh()->GetSocketLocation("Pelvis Socket");
+			SocketLocation = Character->MySMeshComponent->GetSocketLocation("Pelvis Socket");
 			SocketLocation.Z -= HeightLocation.Z;
 			//Checking if Character is inRange of the Ledge
-			if (SocketLocation.Z >= -50.0f || SocketLocation.Z <= 0.0f)
+			if (SocketLocation.Z >= -60.0f && SocketLocation.Z <= 0.0f)
 			{
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
 				
-				Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-				Character->GetCharacterMovement()->StopMovementImmediately();
+				if (Character->isClimbing == false)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Height"));
+					Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+					Character->GetCharacterMovement()->StopMovementImmediately();
+					Character->Hang();
+				}
 			}
 		
 		}

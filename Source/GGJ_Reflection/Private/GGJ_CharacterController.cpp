@@ -30,12 +30,13 @@ AGGJ_CharacterController::AGGJ_CharacterController()
 	MySMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
 	MySMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
+	//LedgeTrace = CreateDefaultSubobject<USphereTrace>(TEXT("LedgeTraceComponent"));
 	IMC = CreateDefaultSubobject<UInteractionManagerComponent>(TEXT("InteractionManager"));
 	AddOwnedComponent(IMC);
 	
 
 }
+
 
 // Called when the game starts or when spawned
 void AGGJ_CharacterController::BeginPlay()
@@ -68,17 +69,16 @@ void AGGJ_CharacterController::VerticalMove(float value)
 	}
 }
 
+float AGGJ_CharacterController::PlayAnimMontage(class UAnimMontage* AnimMontage, float inPlayRate, FName StartSectionName)
+{
+	return duration;
+}
+
 void AGGJ_CharacterController::Hanging()
 {
-	//CAUTION CAUSES CRASH WIL FIGURE OUT TOMORROW
-	/*if (LedgeTrace->FrontTrace() == true)
-		{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
-			if (LedgeTrace->HeightTrace() == true)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Climable"));
-			}
-		}*/
+	isClimbing = true;
+	//PlayAnimMontage()
+	
 }
 
 void AGGJ_CharacterController::HorizontalMove(float value)

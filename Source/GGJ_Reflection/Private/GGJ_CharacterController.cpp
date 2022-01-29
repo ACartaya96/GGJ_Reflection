@@ -83,6 +83,28 @@ void AGGJ_CharacterController::VerticalMove(float value)
 	}
 }
 
+<<<<<<< Updated upstream
+=======
+void AGGJ_CharacterController::Hanging()
+{
+	bool result; 
+	LedgeTrace->FrontTrace(&result);
+	//CAUTION CAUSES CRASH WIL FIGURE OUT TOMORROW
+	if (result == true)
+		{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Obstacle Detected"));
+			/*if (LedgeTrace->HeightTrace() == true)
+			{
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Climable"));
+			}*/
+		}
+}
+
+void AGGJ_CharacterController::Climbing()
+{
+}
+
+>>>>>>> Stashed changes
 void AGGJ_CharacterController::HorizontalMove(float value)
 {
 	if (value  && isClimbing == false)

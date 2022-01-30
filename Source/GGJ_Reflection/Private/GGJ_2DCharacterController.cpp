@@ -12,7 +12,7 @@ AGGJ_2DCharacterController::AGGJ_2DCharacterController()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	AutoPossessPlayer = EAutoReceiveInput::Player1;
+	//AutoPossessPlayer = EAutoReceiveInput::Player1;
 
 	// Use only Yaw from the controller and ignore the rest of the rotation.
 	bUseControllerRotationPitch = false;

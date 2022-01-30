@@ -2,6 +2,7 @@
 
 
 #include "GGJ_2DCharacterController.h"
+#include "GameFramework/Character.h"
 
 
 DEFINE_LOG_CATEGORY_STATIC(SideScrollerCharacter, Log, All);
@@ -67,6 +68,9 @@ AGGJ_2DCharacterController::AGGJ_2DCharacterController()
 	// 	TextComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	// 	TextComponent->SetupAttachment(RootComponent);
 
+	MyMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Player"));
+	MyMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 	// Enable replication on the Sprite component so animations show up when networked
 	//GetSprite()->SetIsReplicated(true);
 	bReplicates = true;
@@ -85,6 +89,7 @@ void AGGJ_2DCharacterController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateCharacter();
+	UpdateJump();
 }
 
 // Called to bind functionality to input
@@ -151,5 +156,22 @@ void AGGJ_2DCharacterController::TouchStarted(const ETouchIndex::Type FingerInde
 
 void AGGJ_2DCharacterController::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
+}
+
+void AGGJ_2DCharacterController::UpdateJump()
+{
+	
+	const FVector GroundedBoxCheckPosition = GetActorLocation();
+	bool isGrounded = GetCharacterMovement()->IsMovingOnGround();
+
+	JumpTime -= 0.1f;
+	if (!isGrounded)
+	{
+		JumpTime = JumpTime;
+	}
+	if (JumpTime > 0 && isGrounded)
+	{
+		JumpTime = 0;
+	}
 }
 

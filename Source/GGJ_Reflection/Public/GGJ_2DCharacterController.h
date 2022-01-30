@@ -25,6 +25,8 @@ public:
 	AGGJ_2DCharacterController();
 	UCameraComponent* SideViewCameraComponent;
 	USpringArmComponent* CameraBoom;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USkeletalMeshComponent* MyMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,10 +39,15 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float JumpTime = 0.2f;
+	
+
 private:
 	void UpdateCharacter();
 	void UpdateAnimation();
 	void MoveRight(float value);
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location);
+	void UpdateJump();
 };
